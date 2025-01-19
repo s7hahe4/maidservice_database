@@ -70,6 +70,23 @@
             color: #721c24;
             border: 1px solid #f5c6cb;
         }
+
+        /* Back Button Styling */
+        .back-btn {
+            display: inline-block;
+            margin: 20px;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+        .back-btn:hover {
+            background-color: #0056b3;
+        }
     </style>
 </head>
 <body>
@@ -103,10 +120,10 @@
         $title = $_POST['title'];
         $scheduledate = $_POST['scheduledate'];
         $scheduletime = $_POST['scheduletime'];
-        $nop = $_POST['nop'];
+        $fees_per_hour = $_POST['fees_per_hour']; // Get fees per hour
 
-        $sql = "INSERT INTO schedule (maidid, title, scheduledate, scheduletime, nop) 
-                VALUES ('$maidid', '$title', '$scheduledate', '$scheduletime', '$nop')";
+        $sql = "INSERT INTO schedule (maidid, title, scheduledate, scheduletime, fees_per_hour) 
+                VALUES ('$maidid', '$title', '$scheduledate', '$scheduletime', '$fees_per_hour')";
 
         if ($database->query($sql) === TRUE) {
             $message = "<div class='message success-msg'>Availability added successfully!</div>";
@@ -123,6 +140,9 @@
             <!-- Include your existing menu code here -->
         </div>
         <div class="dash-body">
+            <!-- Back Button -->
+            <a href="index.php" class="back-btn">Back to Home</a>
+
             <!-- Display the message -->
             <?= $message ?>
 
@@ -138,8 +158,8 @@
                     <input type="date" name="scheduledate" id="scheduledate" required>
                     <label for="scheduletime">Time:</label>
                     <input type="time" name="scheduletime" id="scheduletime" required>
-                    <label for="nop">Number of People (NOP):</label>
-                    <input type="number" name="nop" id="nop" required>
+                    <label for="fees_per_hour">Fees/Hour:</label>
+                    <input type="number" name="fees/hr" id="fees_per_hour" required>
                     <button type="submit">Add Availability</button>
                 </form>
             </div>
@@ -153,7 +173,7 @@
                         <th>Title</th>
                         <th>Date</th>
                         <th>Time</th>
-                        <th>NOP</th>
+                        <th>Fees/Hour</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -165,7 +185,7 @@
                                 <td><?= $row['title'] ?></td>
                                 <td><?= $row['scheduledate'] ?></td>
                                 <td><?= $row['scheduletime'] ?></td>
-                                <td><?= $row['nop'] ?></td>
+                                <td><?= $row['fees/hr'] ?></td>
                             </tr>
                         <?php endwhile; ?>
                     <?php else: ?>

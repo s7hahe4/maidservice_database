@@ -53,7 +53,7 @@
                                 </td>
                                 <td style="padding:0px;margin:0px;">
                                     <p class="profile-title">Administrator</p>
-                                    <p class="profile-subtitle">admin@edoc.com</p>
+                                    <p class="profile-subtitle">admin@gmial.com</p>
                                 </td>
                             </tr>
                             <tr>
@@ -161,7 +161,7 @@
 
                         </td>
                         <td width="5%" style="text-align: center;">
-                        Doctor:
+                        Maid:
                         </td>
                         <td width="30%">
                         <select name="docid" id="" class="box filter-container-items" style="width:90% ;height: 37px;margin: 0;" >
@@ -242,7 +242,7 @@
                                 </th>
                                 
                                 <th class="table-headin">
-                                    Doctor
+                                    Maid
                                 </th>
                                 <th class="table-headin">
                                     

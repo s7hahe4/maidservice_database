@@ -74,7 +74,7 @@
                 </tr>
                 <tr class="menu-row">
                     <td class="menu-btn menu-icon-doctor menu-active menu-icon-doctor-active">
-                        <a href="maid.php" class="non-style-link-menu non-style-link-menu-active"><div><p class="menu-text">Doctors</p></a></div>
+                        <a href="maid.php" class="non-style-link-menu non-style-link-menu-active"><div><p class="menu-text">Maids</p></a></div>
                     </td>
                 </tr>
                 <tr class="menu-row" >
@@ -89,7 +89,7 @@
                 </tr>
                 <tr class="menu-row" >
                     <td class="menu-btn menu-icon-patient">
-                        <a href="client.php" class="non-style-link-menu"><div><p class="menu-text">Patients</p></a></div>
+                        <a href="client.php" class="non-style-link-menu"><div><p class="menu-text">Clients</p></a></div>
                     </td>
                 </tr>
 
@@ -105,7 +105,7 @@
                         
                         <form action="" method="post" class="header-search">
 
-                            <input type="search" name="search" class="input-text header-searchbar" placeholder="Search Doctor name or Email" list="maids">&nbsp;&nbsp;
+                            <input type="search" name="search" class="input-text header-searchbar" placeholder="Search Maid name or Email" list="maids">&nbsp;&nbsp;
                             
                             <?php
                             echo '<datalist id="maids">';
@@ -185,7 +185,7 @@
                                 <th class="table-headin">
                                     
                                 
-                                Doctor Name
+                                Maid Name
                                 
                                 </th>
                                 <th class="table-headin">

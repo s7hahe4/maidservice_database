@@ -93,7 +93,7 @@
                 </tr>
                 <tr class="menu-row">
                     <td class="menu-btn menu-icon-doctor">
-                        <a href="maid.php" class="non-style-link-menu"><div><p class="menu-text">All Doctors</p></a></div>
+                        <a href="maid.php" class="non-style-link-menu"><div><p class="menu-text">All Maids</p></a></div>
                     </td>
                 </tr>
                 
@@ -125,7 +125,7 @@
                     <td >
                             <form action="schedule.php" method="post" class="header-search">
 
-                                        <input type="search" name="search" class="input-text header-searchbar" placeholder="Search Doctor name or Email or Date (YYYY-MM-DD)" list="doctors" >&nbsp;&nbsp;
+                                        <input type="search" name="search" class="input-text header-searchbar" placeholder="Search Maid name or Email or Date (YYYY-MM-DD)" list="maids" >&nbsp;&nbsp;
                                         
                                         <?php
                                         echo '<datalist id="maids">';
@@ -159,7 +159,7 @@
                         </p>
                         <p class="heading-sub12" style="padding: 0;margin: 0;">
                             <?php 
-
+                                $today = date('Y-m-d');
                                 
                                 echo $today;
 
@@ -201,6 +201,7 @@
                             if(isset($_GET["id"])){
                                 
                                 $id=$_GET["id"];
+                                $today = date('Y-m-d');
 
                                 $sqlmain= "select * from schedule inner join maid on schedule.maidid=maid.maidid where schedule.scheduleid=? order by schedule.scheduledate desc";
                                 $stmt = $database->prepare($sqlmain);

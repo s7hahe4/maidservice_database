@@ -101,7 +101,7 @@
                 </tr>
                 <tr class="menu-row">
                     <td class="menu-btn menu-icon-doctor">
-                        <a href="maid.php" class="non-style-link-menu"><div><p class="menu-text">All Doctors</p></a></div>
+                        <a href="maid.php" class="non-style-link-menu"><div><p class="menu-text">All Maids</p></a></div>
                     </td>
                 </tr>
                 

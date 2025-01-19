@@ -90,7 +90,7 @@
                 </tr>
                 <tr class="menu-row" >
                     <td class="menu-btn menu-icon-patient">
-                        <a href="client.php" class="non-style-link-menu"><div><p class="menu-text">Customers</p></a></div>
+                        <a href="client.php" class="non-style-link-menu"><div><p class="menu-text">Clients</p></a></div>
                     </td>
                 </tr>
             </table>
@@ -104,7 +104,7 @@
                                 
                                 <form action="maid.php" method="post" class="header-search">
         
-                                    <input type="search" name="search" class="input-text header-searchbar" placeholder="Search Maid name or Email" list="doctors">&nbsp;&nbsp;
+                                    <input type="search" name="search" class="input-text header-searchbar" placeholder="Search Maid name or Email" list="maids">&nbsp;&nbsp;
                                     
                                     <?php
                                         echo '<datalist id="maids">';
@@ -346,111 +346,49 @@
                                         </div>
                                         </center>
                                 </td>
-                                <td width="50%" style="padding: 0;">
-                                    <center>
-                                        <div class="abc scroll" style="height: 200px;padding: 0;margin: 0;">
-                                        <table width="85%" class="sub-table scrolldown" border="0" >
-                                        <thead>
-                                        <tr>
-                                                <th class="table-headin">
-                                                    
-                                                
-                                                Session Title
-                                                
-                                                </th>
-                                                
-                                                <th class="table-headin">
-                                                    Maid
-                                                </th>
-                                                <th class="table-headin">
-                                                    
-                                                    Scheduled Date & Time
-                                                    
-                                                </th>
-                                                    
-                                                </tr>
-                                        </thead>
-                                        <tbody>
-                                        
-                                        <?php
-                                        $nextweek=date("Y-m-d",strtotime("+1 week"));
-                                        $sqlmain= "select schedule.scheduleid, schedule.title, maid.maidname, schedule.scheduledate, schedule.scheduletime, schedule.nop 
-                                                   from schedule inner join maid 
-                                                   on schedule.maidid=maid.maidid 
-                                                   where schedule.scheduledate>='$today' and schedule.scheduledate<='$nextweek' 
-                                                   order by schedule.scheduledate desc"; 
-                                        $result= $database->query($sqlmain);
+                                <?php
+$nextweek = date("Y-m-d", strtotime("+1 week"));
+$sqlmain = "SELECT schedule.scheduleid, schedule.title, maid.maidname, schedule.scheduledate, schedule.scheduletime, schedule.`fees/hr` 
+            FROM schedule 
+            INNER JOIN maid ON schedule.maidid = maid.maidid 
+            WHERE schedule.scheduledate >= '$today' AND schedule.scheduledate <= '$nextweek' 
+            ORDER BY schedule.scheduledate DESC"; 
 
-                                        if($result->num_rows==0){
-                                            echo '<tr>
-                                            <td colspan="4">
-                                            <br><br><br><br>
-                                            <center>
-                                            <img src="../img/notfound.svg" width="25%">
-                                            
-                                            <br>
-                                            <p class="heading-main12" style="margin-left: 45px;font-size:20px;color:rgb(49, 49, 49)">We couldn\'t find anything related to your keywords!</p>
-                                            <a class="non-style-link" href="schedule.php"><button class="login-btn btn-primary-soft btn" style="display: flex;justify-content: center;align-items: center;margin-left:20px;">&nbsp; Show all Sessions &nbsp;</button></a>
-                                            </center>
-                                            <br><br><br><br>
-                                            </td>
-                                            </tr>';
-                                            
-                                        } else {
-                                            for ($x=0; $x<$result->num_rows; $x++){
-                                                $row=$result->fetch_assoc();
-                                                $scheduleid=$row["scheduleid"];
-                                                $title=$row["title"];
-                                                $maidname=$row["maidname"];
-                                                $scheduledate=$row["scheduledate"];
-                                                $scheduletime=$row["scheduletime"];
-                                                $nop=$row["nop"];
-                                                echo '<tr>
-                                                    <td style="padding:20px;"> &nbsp;'.
-                                                    substr($title,0,30)
-                                                    .'</td>
-                                                    <td>
-                                                    '.substr($maidname,0,20).'
-                                                    </td>
-                                                    <td style="text-align:center;">
-                                                        '.substr($scheduledate,0,10).' '.substr($scheduletime,0,5).'
-                                                    </td>
-                                                </tr>';
-                                            }
-                                        }
-                                        ?>
-                 
-                                            </tbody>
-                
-                                        </table>
-                                        </div>
-                                        </center>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <center>
-                                        <a href="appointment.php" class="non-style-link"><button class="btn-primary btn" style="width:85%">Show all Appointments</button></a>
-                                    </center>
-                                </td>
-                                <td>
-                                    <center>
-                                        <a href="schedule.php" class="non-style-link"><button class="btn-primary btn" style="width:85%">Show all Sessions</button></a>
-                                    </center>
-                                </td>
-                            </tr>
-                        </table>
-                    </td>
+$result = $database->query($sqlmain);
 
-                </tr>
-                        </table>
-                        </center>
-                        </td>
-                </tr>
-            </table>
-        </div>
-    </div>
+if ($result->num_rows == 0) {
+    echo '<tr>
+            <td colspan="4">
+            <br><br><br><br>
+            <center>
+            <img src="../img/notfound.svg" width="25%">
+            <br>
+            <p class="heading-main12" style="margin-left: 45px;font-size:20px;color:rgb(49, 49, 49)">We couldn\'t find anything related to your keywords!</p>
+            <a class="non-style-link" href="schedule.php"><button class="login-btn btn-primary-soft btn" style="display: flex;justify-content: center;align-items: center;margin-left:20px;">&nbsp; Show all Sessions &nbsp;</button></a>
+            </center>
+            <br><br><br><br>
+            </td>
+          </tr>';
+} else {
+    for ($x = 0; $x < $result->num_rows; $x++) {
+        $row = $result->fetch_assoc();
+        $scheduleid = $row["scheduleid"];
+        $title = $row["title"];
+        $maidname = $row["maidname"];
+        $scheduledate = $row["scheduledate"];
+        $scheduletime = $row["scheduletime"];
+        $fees_per_hour = $row["fees/hr"];  // Fetching the fees/hr value
 
-
-</body>
-</html>
+        echo '<tr>
+                <td style="padding:20px;"> &nbsp;' . substr($title, 0, 30) . '</td>
+                <td>' . substr($maidname, 0, 20) . '</td>
+                <td style="text-align:center;">
+                    ' . substr($scheduledate, 0, 10) . ' ' . substr($scheduletime, 0, 5) . '
+                </td>
+                <td style="text-align:center;">
+                    ₹' . htmlspecialchars($fees_per_hour) . ' /hr
+                </td>
+              </tr>';
+    }
+}
+?>

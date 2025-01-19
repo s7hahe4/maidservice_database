@@ -76,7 +76,7 @@
              </tr>
              <tr class="menu-row">
                  <td class="menu-btn menu-icon-appoinment  ">
-                     <a href="appointment.php" class="non-style-link-menu"><div><p class="menu-text">Add avaibality</p></a></div>
+                     <a href="appointment.php" class="non-style-link-menu"><div><p class="menu-text">Add availability</p></a></div>
                  </td>
              </tr>
              

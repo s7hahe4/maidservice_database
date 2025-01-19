@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="../css/main.css">  
     <link rel="stylesheet" href="../css/admin.css">
         
-    <title>Patients</title>
+    <title>Clients</title>
     <style>
         .popup{
             animation: transitionIn-Y-bottom 0.5s;
@@ -92,7 +92,7 @@
                 </tr>
                 <tr class="menu-row" >
                     <td class="menu-btn menu-icon-patient menu-active menu-icon-patient-active">
-                        <a href="client.php" class="non-style-link-menu  non-style-link-menu-active"><div><p class="menu-text">My Patients</p></a></div>
+                        <a href="client.php" class="non-style-link-menu  non-style-link-menu-active"><div><p class="menu-text">My Clients</p></a></div>
                     </td>
                 </tr>
                 <tr class="menu-row" >
@@ -158,7 +158,7 @@
                         
                         <form action="" method="post" class="header-search">
 
-                            <input type="search" name="search12" class="input-text header-searchbar" placeholder="Search Patient name or Email" list="patient">&nbsp;&nbsp;
+                            <input type="search" name="search12" class="input-text header-searchbar" placeholder="Search Client name or Email" list="client">&nbsp;&nbsp;
                             
                             <?php
                             echo '<datalist id="client">';

@@ -168,7 +168,7 @@
 
                                 <input type="search" name="search" class="input-text " placeholder="Search Maid, and We Will Find the Perfect Match for You.
 
-" list="doctors" style="width:45%;">&nbsp;&nbsp;
+" list="maids" style="width:45%;">&nbsp;&nbsp;
                                 
                             <?php
                             echo '<datalist id="maids">';

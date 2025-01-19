@@ -163,15 +163,23 @@
                 if($_POST){
                     $keyword=$_POST["search"];
                     
-                    $sqlmain= "select * 
-                               from maid 
-                               where maidemail='$keyword' or maidname='$keyword' or maidname 
-                               like '$keyword%' or maidname like '%$keyword' or maidname like '%$keyword%'";
+                    $sqlmain= "SELECT maid.*, specialties.sname 
+                               FROM maid 
+                               LEFT JOIN specialties ON maid.specialties = specialties.id
+                               WHERE maidemail='$keyword' 
+                               OR maidname='$keyword' 
+                               OR specialties.sname='$keyword' 
+                               OR maidname LIKE '$keyword%' 
+                               OR maidname LIKE '%$keyword' 
+                               OR maidname LIKE '%$keyword%' 
+                               OR specialties.sname LIKE '$keyword%' 
+                               OR specialties.sname LIKE '%$keyword' 
+                               OR specialties.sname LIKE '%$keyword%'";
                 }else{
-                    $sqlmain= "select * 
-                               from maid 
-                               order by maidid desc";
-
+                    $sqlmain= "SELECT maid.*, specialties.sname 
+                               FROM maid 
+                               LEFT JOIN specialties ON maid.specialties = specialties.id
+                               ORDER BY maidid DESC";
                 }
                 ?>
                   
