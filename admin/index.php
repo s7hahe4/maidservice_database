@@ -108,7 +108,8 @@
                                     
                                     <?php
                                         echo '<datalist id="maids">';
-                                        $list11 = $database->query("select maidname, maidemail from maid;");
+                                        $list11 = $database->query("select maidname, maidemail 
+                                                                    from maid;");
                                         
                                         for ($y=0; $y<$list11->num_rows; $y++){
                                             $row00 = $list11->fetch_assoc();
@@ -138,11 +139,16 @@
                                     $today = date('Y-m-d');
                                     echo $today;
 
-                                    $clientrow = $database->query("select * from client;");
-                                    $maidrow = $database->query("select * from maid;");
+                                    $clientrow = $database->query("select * 
+                                                                   from client;");
+
+                                    $maidrow = $database->query("select * 
+                                                                 from maid;");
+
                                     $appointmentrow = $database->query("select * 
                                                                         from appointment 
                                                                         where appodate>='$today';");
+
                                     $schedulerow = $database->query("select * 
                                                                      from schedule 
                                                                      where scheduledate='$today';");
@@ -291,7 +297,13 @@
                                         
                                         <?php
                                         $nextweek=date("Y-m-d",strtotime("+1 week"));
-                                        $sqlmain= "select appointment.appoid, schedule.scheduleid, schedule.title, maid.maidname, client.clientname, schedule.scheduledate, schedule.scheduletime, appointment.apponum, appointment.appodate from schedule inner join appointment on schedule.scheduleid=appointment.scheduleid inner join client on client.clientid=appointment.clientid inner join maid on schedule.maidid=maid.maidid where schedule.scheduledate>='$today' and schedule.scheduledate<='$nextweek' order by schedule.scheduledate desc";
+                                        $sqlmain= "select appointment.appoid, schedule.scheduleid, schedule.title, maid.maidname, client.clientname, schedule.scheduledate, schedule.scheduletime, appointment.apponum, appointment.appodate 
+                                                   from schedule 
+                                                   inner join appointment on schedule.scheduleid=appointment.scheduleid 
+                                                   inner join client on client.clientid=appointment.clientid 
+                                                   inner join maid on schedule.maidid=maid.maidid 
+                                                   where schedule.scheduledate>='$today' and schedule.scheduledate<='$nextweek' 
+                                                   order by schedule.scheduledate desc";
 
                                         $result= $database->query($sqlmain);
 

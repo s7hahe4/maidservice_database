@@ -53,7 +53,7 @@
                                 </td>
                                 <td style="padding:0px;margin:0px;">
                                     <p class="profile-title">Administrator</p>
-                                    <p class="profile-subtitle">admin@gmial.com</p>
+                                    <p class="profile-subtitle">admin@gmail.com</p>
                                 </td>
                             </tr>
                             <tr>
@@ -97,10 +97,10 @@
             <table border="0" width="100%" style=" border-spacing: 0;margin:0;padding:0;margin-top:25px; ">
                 <tr >
                     <td width="13%" >
-                    <a href="schedule.php" ><button  class="login-btn btn-primary-soft btn btn-icon-back"  style="padding-top:11px;padding-bottom:11px;margin-left:20px;width:125px"><font class="tn-in-text">Back</font></button></a>
+                    <a href="index.php" ><button  class="login-btn btn-primary-soft btn btn-icon-back"  style="padding-top:11px;padding-bottom:11px;margin-left:20px;width:125px"><font class="tn-in-text">Back</font></button></a>
                     </td>
                     <td>
-                        <p style="font-size: 23px;padding-left:12px;font-weight: 600;">Shedule Manager</p>
+                        <p style="font-size: 23px;padding-left:12px;font-weight: 600;">Schedule Manager</p>
                                            
                     </td>
                     <td width="15%">
@@ -209,7 +209,9 @@
                     }
                     //echo $sqlpt2;
                     //echo $sqlpt1;
-                    $sqlmain= "select schedule.scheduleid, schedule.title, maid.maidname, schedule.scheduledate, schedule.scheduletime, schedule.nop from schedule inner join maid on schedule.maidid=maid.maidid ";
+                    $sqlmain= "select schedule.scheduleid, schedule.title, maid.maidname, schedule.scheduledate, schedule.scheduletime, schedule.nop 
+                               from schedule 
+                               inner join maid on schedule.maidid=maid.maidid ";
                     $sqllist=array($sqlpt1,$sqlpt2);
                     $sqlkeywords=array(" where "," and ");
                     $key2=0;
@@ -223,7 +225,10 @@
                     //echo $sqlmain;
 
                 } else {
-                    $sqlmain= "select schedule.scheduleid, schedule.title, maid.maidname, schedule.scheduledate, schedule.scheduletime, schedule.nop from schedule inner join maid on schedule.maidid=maid.maidid order by schedule.scheduledate desc";
+                    $sqlmain= "select schedule.scheduleid, schedule.title, maid.maidname, schedule.scheduledate, schedule.scheduletime, schedule.nop 
+                               from schedule 
+                               inner join maid on schedule.maidid=maid.maidid 
+                               order by schedule.scheduledate desc";
                 }
                 ?>
                   
@@ -246,12 +251,12 @@
                                 </th>
                                 <th class="table-headin">
                                     
-                                    Sheduled Date & Time
+                                    Scheduled Date & Time
                                     
                                 </th>
                                 <th class="table-headin">
                                     
-                                Max num that can be booked
+                                Maximum that can be booked
                                     
                                 </th>
                                 
@@ -489,10 +494,22 @@
             </div>
             '; 
         } elseif($action=='view'){
-            $sqlmain= "select schedule.scheduleid, schedule.title, maid.maidname, schedule.scheduledate, schedule.scheduletime, schedule.nop 
-                       from schedule inner join maid 
-                       on schedule.maidid=maid.maidid 
-                       where schedule.scheduleid=$id";
+            $sqlmain = "SELECT 
+                s.scheduleid, 
+                s.title, 
+                m.maidname, 
+                s.scheduledate, 
+                s.scheduletime, 
+                s.nop
+            FROM 
+                (SELECT * FROM schedule WHERE scheduleid = $id) AS s
+            INNER JOIN 
+                (SELECT * FROM maid WHERE maidid IN (SELECT maidid FROM schedule WHERE scheduleid = $id)) AS m
+            ON 
+                s.maidid = m.maidid
+            WHERE 
+                s.scheduleid = $id";
+
             $result= $database->query($sqlmain);
             $row=$result->fetch_assoc();
             $maidname=$row["maidname"];

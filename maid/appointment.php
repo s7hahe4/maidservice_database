@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="../css/animations.css">  
     <link rel="stylesheet" href="../css/main.css">  
     <link rel="stylesheet" href="../css/admin.css">
-        
     <title>Availability Manager</title>
     <style>
         .popup {
@@ -116,13 +115,14 @@
 
     // Handle form submission to add availability
     if ($_SERVER["REQUEST_METHOD"] === "POST") {
-        $maidid = $_POST['maidid']; // Manually input maid ID
+        $maidid = $_POST['maidid'];
         $title = $_POST['title'];
         $scheduledate = $_POST['scheduledate'];
         $scheduletime = $_POST['scheduletime'];
-        $fees_per_hour = $_POST['fees_per_hour']; // Get fees per hour
+        $fees_per_hour = $_POST['fees_per_hour']; // Use the correct key from the form
 
-        $sql = "INSERT INTO schedule (maidid, title, scheduledate, scheduletime, fees_per_hour) 
+        // Use backticks for the column name
+        $sql = "INSERT INTO schedule (maidid, title, scheduledate, scheduletime, `fees/hr`) 
                 VALUES ('$maidid', '$title', '$scheduledate', '$scheduletime', '$fees_per_hour')";
 
         if ($database->query($sql) === TRUE) {
@@ -159,7 +159,7 @@
                     <label for="scheduletime">Time:</label>
                     <input type="time" name="scheduletime" id="scheduletime" required>
                     <label for="fees_per_hour">Fees/Hour:</label>
-                    <input type="number" name="fees/hr" id="fees_per_hour" required>
+                    <input type="number" name="fees_per_hour" id="fees_per_hour" required>
                     <button type="submit">Add Availability</button>
                 </form>
             </div>

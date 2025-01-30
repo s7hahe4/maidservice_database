@@ -284,7 +284,7 @@
                         <h2></h2>
                         <a class="close" href="settings.php">&times;</a>
                         <div class="content">
-                            Maid Service Web App<br>
+                           dbms project <br>
                             
                         </div>
                         <div style="display: flex;justify-content: center;">
@@ -320,7 +320,7 @@
                             </tr>
                             <tr>
                                 <td class="label-td" colspan="2">
-                                    <label for="nic" class="form-label">NIC: </label>
+                                    <label for="nic" class="form-label">NID: </label>
                                 </td>
                             </tr>
                             <tr>
@@ -452,12 +452,12 @@
                                     
                                     <tr>
                                         <td class="label-td" colspan="2">
-                                            <label for="nic" class="form-label">NIC: </label>
+                                            <label for="nic" class="form-label">NID: </label>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td class="label-td" colspan="2">
-                                            <input type="text" name="nic" class="input-text" placeholder="NIC Number" value="'.$nic.'" required><br>
+                                            <input type="text" name="nic" class="input-text" placeholder="NID Number" value="'.$nic.'" required><br>
                                         </td>
                                     </tr>
                                     <tr>

@@ -306,115 +306,93 @@
             </div>
             ';
         } elseif($action=='view'){
-            $sqlmain = "SELECT * FROM maid WHERE maidid=?";
-            $stmt = $database->prepare($sqlmain);
-            $stmt->bind_param("i",$id);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            $row = $result->fetch_assoc();
+    $sqlmain = "SELECT * FROM maid WHERE maidid=?";
+    $stmt = $database->prepare($sqlmain);
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $row = $result->fetch_assoc();
 
-            $name=$row["maidname"];
-            $email=$row["maidemail"];
-            $spe=$row["specialties"];
-            
-            $stmt = $database->prepare("select sname from specialties where id=?");
-            $stmt->bind_param("s",$spe);
-            $stmt->execute();
-            $spcil_res = $stmt->get_result();
-            $spcil_array= $spcil_res->fetch_assoc();
-            $spcil_name=$spcil_array["sname"];
-            $nic=$row['maidnic'];
-            $tele=$row['maidtel'];
-            echo '
-            <div id="popup1" class="overlay">
-                    <div class="popup">
-                    <center>
-                        <h2></h2>
-                        <a class="close" href="maid.php">&times;</a>
-                        <div class="content">
-                            eDoc Web App<br>
-                            
-                        </div>
-                        <div style="display: flex;justify-content: center;">
-                        <table width="80%" class="sub-table scrolldown add-doc-form-container" border="0">
-                        
-                            <tr>
-                                <td>
-                                    <p style="padding: 0;margin: 0;text-align: left;font-size: 25px;font-weight: 500;">View Details.</p><br><br>
-                                </td>
-                            </tr>
-                            
-                            <tr>
-                                
-                                <td class="label-td" colspan="2">
-                                    <label for="name" class="form-label">Name: </label>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="label-td" colspan="2">
-                                    '.$name.'<br><br>
-                                </td>
-                                
-                            </tr>
-                            <tr>
-                                <td class="label-td" colspan="2">
-                                    <label for="Email" class="form-label">Email: </label>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="label-td" colspan="2">
-                                '.$email.'<br><br>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="label-td" colspan="2">
-                                    <label for="nic" class="form-label">NIC: </label>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="label-td" colspan="2">
-                                '.$nic.'<br><br>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="label-td" colspan="2">
-                                    <label for="Tele" class="form-label">Telephone: </label>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="label-td" colspan="2">
-                                '.$tele.'<br><br>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="label-td" colspan="2">
-                                    <label for="spec" class="form-label">Specialties: </label>
-                                    
-                                </td>
-                            </tr>
-                            <tr>
-                            <td class="label-td" colspan="2">
-                            '.$spcil_name.'<br><br>
+    $name = $row["maidname"];
+    $email = $row["maidemail"];
+    $spe = $row["specialties"];
+
+    $stmt = $database->prepare("SELECT sname FROM specialties WHERE id=?");
+    $stmt->bind_param("s", $spe);
+    $stmt->execute();
+    $spcil_res = $stmt->get_result();
+    $spcil_array = $spcil_res->fetch_assoc();
+    $spcil_name = $spcil_array["sname"];
+    $tele = $row['maidtel'];
+    echo '
+    <div id="popup1" class="overlay">
+        <div class="popup">
+            <center>
+                <h2></h2>
+                <a class="close" href="maid.php">&times;</a>
+                <div class="content">
+                    DBMS project<br>
+                </div>
+                <div style="display: flex;justify-content: center;">
+                    <table width="80%" class="sub-table scrolldown add-doc-form-container" border="0">
+                        <tr>
+                            <td>
+                                <p style="padding: 0;margin: 0;text-align: left;font-size: 25px;font-weight: 500;">View Details.</p><br><br>
                             </td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">
-                                    <a href="maid.php"><input type="button" value="OK" class="login-btn btn-primary-soft btn" ></a>
-                                
-                                    
-                                </td>
-                
-                            </tr>
-                        
-
-                        </table>
-                        </div>
-                    </center>
-                    <br><br>
-            </div>
-            </div>
-            ';
-        } elseif($action=='session'){
+                        </tr>
+                        <tr>
+                            <td class="label-td" colspan="2">
+                                <label for="name" class="form-label">Name: </label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="label-td" colspan="2">
+                                '.$name.'<br><br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="label-td" colspan="2">
+                                <label for="Email" class="form-label">Email: </label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="label-td" colspan="2">
+                                '.$email.'<br><br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="label-td" colspan="2">
+                                <label for="Tele" class="form-label">Telephone: </label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="label-td" colspan="2">
+                                '.$tele.'<br><br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="label-td" colspan="2">
+                                <label for="spec" class="form-label">Specialties: </label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="label-td" colspan="2">
+                                '.$spcil_name.'<br><br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <a href="maid.php"><input type="button" value="OK" class="login-btn btn-primary-soft btn"></a>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </center>
+            <br><br>
+        </div>
+    </div>
+    ';
+} elseif($action=='session'){
             $name=$_GET["name"];
             echo '
             <div id="popup1" class="overlay">

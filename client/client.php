@@ -19,38 +19,32 @@
 </style>
 </head>
 <body>
-    <?php
+        <?php
 
-    //learn from w3schools.com
+        //learn from w3schools.com
 
-    session_start();
+        session_start();
 
-    if(isset($_SESSION["user"])){
-        if(($_SESSION["user"])=="" or $_SESSION['usertype']!='m'){
-            header("location: ../login.php");
+        if(isset($_SESSION["user"])){
+            if(($_SESSION["user"])=="" or $_SESSION['usertype']!='m'){
+                header("location: ../login.php");
+            }else{
+                $useremail=$_SESSION["user"];
+            }
+
         }else{
-            $useremail=$_SESSION["user"];
+            header("location: ../login.php");
         }
 
-    }else{
-        header("location: ../login.php");
-    }
 
+        //import database
+        include("../connection.php");
+        $userrow = $database->query("select * from maid where maidemail='$useremail'");
+        $userfetch=$userrow->fetch_assoc();
+        $userid= $userfetch["maidid"];
+        $username=$userfetch["maidname"];
 
-    //import database
-    include("../connection.php");
-    $sqlmain= "select * from maid where maidemail=?";
-    $stmt = $database->prepare($sqlmain);
-    $stmt->bind_param("s",$useremail);
-    $stmt->execute();
-    $userrow = $stmt->get_result();
-    $userfetch=$userrow->fetch_assoc();
-    $userid= $userfetch["maidid"];
-    $username=$userfetch["maidname"];
-
-    //echo $userid;
-    //echo $username;
-    ?>
+        ?>
     <div class="container">
     <div class="menu">
             <table class="menu-container" border="0">
@@ -81,7 +75,7 @@
                 </tr>
                 <tr class="menu-row">
                     <td class="menu-btn menu-icon-appoinment">
-                        <a href="appointment.php" class="non-style-link-menu"><div><p class="menu-text">My Appointments</p></a></div>
+                        <a href="appointment.php" class="non-style-link-menu"><div><p class="menu-text">Add avaibality</p></a></div>
                     </td>
                 </tr>
                 
@@ -111,36 +105,56 @@
 
             if(isset($_POST["search"])){
                 $keyword=$_POST["search12"];
-                /*TODO: make and understand */
-                $sqlmain= "select * 
-                           from client 
-                           where clientemail='$keyword' or clientname='$keyword' or clientname 
-                           like '$keyword%' or clientname like '%$keyword' or clientname like '%$keyword%' ";
+                
+                $sqlmain= "select * from client where clientemail='$keyword' or clientname='$keyword' or clientname like '$keyword%' or clientname like '%$keyword' or clientname like '%$keyword%' ";
                 $selecttype="my";
             }
             
-            if(isset($_POST["filter"])){
+            /*if(isset($_POST["filter"])){
                 if($_POST["showonly"]=='all'){
                     $sqlmain= "select * from client";
                     $selecttype="All";
                     $current="All clients";
                 }else{
-                    $sqlmain= "select * 
-                               from appointment inner join client 
-                               on client.clientid=appointment.clientid 
-                               inner join schedule 
-                               on schedule.scheduleid=appointment.scheduleid 
-                               where schedule.maidid=$userid;";
+                    $sqlmain= "select * from appointment inner join client on client.clientid=appointment.clientid inner join schedule on schedule.scheduleid=appointment.scheduleid where schedule.maidid=$userid;";
                     $selecttype="My";
                     $current="My clients Only";
                 }
+            }*/
+            if(isset($_POST["filter"])){
+                $sqlmain= "select * 
+                           from appointment 
+                           inner join client on client.clientid=appointment.clientid 
+                           inner join schedule on schedule.scheduleid=appointment.scheduleid 
+                           where schedule.maidid=$userid";
+                $selecttype="My";
+                $current="Name Ascending Order";
+                switch($_POST["filter"]) {
+                    case 'name_asc':
+                        $sqlmain .= " ORDER BY clientname ASC";
+                        break;
+                    case 'name_desc':
+                        $sqlmain .= " ORDER BY clientname DESC";
+                        break;
+                    case 'date_asc':
+                        $sqlmain .= " ORDER BY scheduledate ASC";
+                        break;
+                    case 'date_desc':
+                        $sqlmain .= " ORDER BY scheduledate DESC";
+                        break;
+                    case 'time_asc':
+                        $sqlmain .= " ORDER BY scheduletime ASC";
+                        break;
+                    case 'time_desc':
+                        $sqlmain .= " ORDER BY scheduletime DESC";
+                        break;
+                }
             }
+            
         }else{
             $sqlmain= "select * 
-                       from appointment inner join client 
-                       on client.clientid=appointment.clientid 
-                       inner join schedule 
-                       on schedule.scheduleid=appointment.scheduleid 
+                       from appointment inner join client on client.clientid=appointment.clientid 
+                       inner join schedule on schedule.scheduleid=appointment.scheduleid 
                        where schedule.maidid=$userid;";
             $selecttype="My";
         }
@@ -222,8 +236,12 @@
                         <td width="30%">
                         <select name="showonly" id="" class="box filter-container-items" style="width:90% ;height: 37px;margin: 0;" >
                                     <option value="" disabled selected hidden><?php echo $current   ?></option><br/>
-                                    <option value="my">My Clients Only</option><br/>
-                                    <option value="all">All Clients</option><br/>
+                                    <option value="name_asc">Name Ascending Order</option><br/>
+                                    <option value="name_desc">Name Descending Order</option><br/>
+                                    <option value="date_asc">Date Ascending Order</option><br/>
+                                    <option value="date_desc">Date Descending Order</option><br/>
+                                    <option value="time_asc">Time Ascending Order</option><br/>
+                                    <option value="time_desc">Time Descending Order</option><br/>
                                     
 
                         </select>
@@ -304,7 +322,7 @@
                         } else {
                             for ($x=0; $x<$result->num_rows; $x++){
                                 $row=$result->fetch_assoc();
-                                $clientid=$row["clientid"];
+                                $cid=$row["clientid"];
                                 $name=$row["clientname"];
                                 $email=$row["clientemail"];
                                 $nic=$row["clientnic"];
@@ -330,7 +348,7 @@
                                     <td >
                                     <div style="display:flex;justify-content: center;">
                                     
-                                    <a href="?action=view&id='.$clientid.'" class="non-style-link"><button class="btn-primary-soft btn button-icon btn-view" style="padding-left: 40px;padding-top: 12px;padding-bottom: 12px;margin-top: 10px;"><font class="tn-in-text">View</font></button></a>
+                                    <a href="?action=view&id='.$cid.'" class="non-style-link"><button class="btn-primary-soft btn button-icon btn-view" style="padding-left: 40px;padding-top: 12px;padding-bottom: 12px;margin-top: 10px;"><font class="tn-in-text">View</font></button></a>
                                 
                                     </div>
                                     </td>
@@ -359,130 +377,128 @@
         
         $id=$_GET["id"];
         $action=$_GET["action"];
-        $sqlmain= "select * from client where clientid=?";
-        $stmt = $database->prepare($sqlmain);
-        $stmt->bind_param("i",$id);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $row=$result->fetch_assoc();
-        $name=$row["clientname"];
-        $email=$row["clientemail"];
-        $nic=$row["clientnic"];
-        $dob=$row["clientdob"];
-        $tele=$row["clienttel"];
-        $address=$row["clientaddress"];
-        echo '
-        <div id="popup1" class="overlay">
-                <div class="popup">
-                <center>
-                    <a class="close" href="client.php">&times;</a>
-                    <div class="content">
+            $sqlmain= "select * from client where clientid='$id'";
+            $result= $database->query($sqlmain);
+            $row=$result->fetch_assoc();
+            $name=$row["clientname"];
+            $email=$row["clientemail"];
+            $nic=$row["clientnic"];
+            $dob=$row["clientdob"];
+            $tele=$row["clienttel"];
+            $address=$row["clientaddress"];
+            echo '
+            <div id="popup1" class="overlay">
+                    <div class="popup">
+                    <center>
+                        <a class="close" href="client.php">&times;</a>
+                        <div class="content">
 
-                    </div>
-                    <div style="display: flex;justify-content: center;">
-                    <table width="80%" class="sub-table scrolldown add-doc-form-container" border="0">
-                    
-                        <tr>
-                            <td>
-                                <p style="padding: 0;margin: 0;text-align: left;font-size: 25px;font-weight: 500;">View Details.</p><br><br>
-                            </td>
-                        </tr>
-                        <tr>
-                            
-                            <td class="label-td" colspan="2">
-                                <label for="name" class="form-label">Client ID: </label>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="label-td" colspan="2">
-                                C-'.$id.'<br><br>
-                            </td>
-                            
-                        </tr>
+                        </div>
+                        <div style="display: flex;justify-content: center;">
+                        <table width="80%" class="sub-table scrolldown add-doc-form-container" border="0">
                         
-                        <tr>
-                            
-                            <td class="label-td" colspan="2">
-                                <label for="name" class="form-label">Name: </label>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="label-td" colspan="2">
-                                '.$name.'<br><br>
-                            </td>
-                            
-                        </tr>
-                        <tr>
-                            <td class="label-td" colspan="2">
-                                <label for="Email" class="form-label">Email: </label>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="label-td" colspan="2">
-                            '.$email.'<br><br>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="label-td" colspan="2">
-                                <label for="nic" class="form-label">NIC: </label>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="label-td" colspan="2">
-                            '.$nic.'<br><br>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="label-td" colspan="2">
-                                <label for="Tele" class="form-label">Telephone: </label>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="label-td" colspan="2">
-                            '.$tele.'<br><br>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="label-td" colspan="2">
-                                <label for="spec" class="form-label">Address: </label>
+                            <tr>
+                                <td>
+                                    <p style="padding: 0;margin: 0;text-align: left;font-size: 25px;font-weight: 500;">View Details.</p><br><br>
+                                </td>
+                            </tr>
+                            <tr>
                                 
-                            </td>
-                        </tr>
-                        <tr>
-                        <td class="label-td" colspan="2">
-                        '.$address.'<br><br>
-                        </td>
-                        </tr>
-                        <tr>
+                                <td class="label-td" colspan="2">
+                                    <label for="name" class="form-label">Client ID: </label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="label-td" colspan="2">
+                                    C-'.$id.'<br><br>
+                                </td>
+                                
+                            </tr>
                             
-                            <td class="label-td" colspan="2">
-                                <label for="name" class="form-label">Date of Birth: </label>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="label-td" colspan="2">
-                                '.$dob.'<br><br>
-                            </td>
-                            
-                        </tr>
-                        <tr>
-                            <td colspan="2">
-                                <a href="client.php"><input type="button" value="OK" class="login-btn btn-primary-soft btn" ></a>
-                            
+                            <tr>
+                                
+                                <td class="label-td" colspan="2">
+                                    <label for="name" class="form-label">Name: </label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="label-td" colspan="2">
+                                    '.$name.'<br><br>
+                                </td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="label-td" colspan="2">
+                                    <label for="Email" class="form-label">Email: </label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="label-td" colspan="2">
+                                '.$email.'<br><br>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="label-td" colspan="2">
+                                    <label for="nic" class="form-label">NIC: </label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="label-td" colspan="2">
+                                '.$nic.'<br><br>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="label-td" colspan="2">
+                                    <label for="Tele" class="form-label">Telephone: </label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="label-td" colspan="2">
+                                '.$tele.'<br><br>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="label-td" colspan="2">
+                                    <label for="spec" class="form-label">Address: </label>
                                     
+                                </td>
+                            </tr>
+                            <tr>
+                            <td class="label-td" colspan="2">
+                            '.$address.'<br><br>
                             </td>
-            
-                        </tr>
-                    
+                            </tr>
+                            <tr>
+                                
+                                <td class="label-td" colspan="2">
+                                    <label for="name" class="form-label">Date of Birth: </label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="label-td" colspan="2">
+                                    '.$dob.'<br><br>
+                                </td>
+                                
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <a href="client.php"><input type="button" value="OK" class="login-btn btn-primary-soft btn" ></a>
+                                
+                                    
+                                </td>
+                
+                            </tr>
+                        
 
-                    </table>
-                    </div>
-                </center>
-                <br><br>
-        </div>
-        </div>
-        ';
-    }
+                        </table>
+                        </div>
+                    </center>
+                    <br><br>
+            </div>
+            </div>
+            ';
+        
+    };
 
     ?>
 </div>
